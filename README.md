@@ -109,7 +109,7 @@ cp config.example.json config.json
 
 - `clean.base_url`：你的 CLIProxyAPI 地址（例如 `http://127.0.0.1:8317`）
 - `clean.token`：CLIProxyAPI 管理 token
-- `mail.provider` + 对应 provider 的配置（`mail.api_base/api_key/domain/domains` 或 `cfmail.api_base/api_key/domains` 等）
+- `mail.provider` + 对应 provider 的配置（如 `mail.api_base/api_key/domain/domains`、`cfmail.api_base/api_key/domains`、`skymail.api_base/admin_email/admin_password/domain(s)` 等）
 
 ### 3) 启动项目
 
@@ -150,12 +150,19 @@ cp config.example.json config.json
 
 ### `mail`（邮箱提供方）
 
-- `provider`：`cfmail / self_hosted_mail_api / duckmail / tempmail_lol / yyds_mail`
+- `provider`：`cfmail / self_hosted_mail_api / duckmail / tempmail_lol / yyds_mail / skymail`
 - 不同 provider 需要填写对应 section 的鉴权字段
 - `otp_timeout_seconds` / `poll_interval_seconds`：验证码等待与轮询间隔
-- 支持多域名的 provider：`self_hosted_mail_api / duckmail / yyds_mail`
+- 支持多域名的 provider：`self_hosted_mail_api / duckmail / yyds_mail / skymail`
 - `domains`：可选数组，配置多个域名时按顺序轮询；如果填写，优先级高于单个 `domain`
 - `tempmail_lol` 当前不支持自定义多域名切换
+
+### `skymail`（SkyMail）
+
+- `api_base`：SkyMail 服务地址
+- `token`：可选；如果留空，系统会尝试使用 `admin_email` + `admin_password` 自动生成 token
+- `admin_email` / `admin_password`：当 `token` 为空时使用
+- `domains`：域名列表，填写后优先于单个 `domain`
 
 ### `cfmail`（CF 自建邮箱）
 

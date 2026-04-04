@@ -53,7 +53,7 @@
   },
   "skymail": {
     "api_base": "https://your-skymail-instance.com",
-    "token": "YOUR_SKYMAIL_TOKEN",
+    "token": "",
     "admin_email": "admin@example.com",
     "admin_password": "YOUR_ADMIN_PASSWORD",
     "domain": "mail.example.com",
