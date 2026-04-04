@@ -44,6 +44,14 @@ export const defaultBackendConfig: BackendConfig = {
     domain: "",
     domains: [],
   },
+  skymail: {
+    api_base: "https://your-skymail-instance.com",
+    token: "",
+    admin_email: "admin@example.com",
+    admin_password: "",
+    domain: "mail.example.com",
+    domains: [],
+  },
   maintainer: {
     min_candidates: 50,
     loop_interval_seconds: 60,
@@ -140,6 +148,7 @@ export function normalizeBackendConfig(raw: Partial<BackendConfig> | Record<stri
   const duckmail = (source.duckmail ?? {}) as Partial<BackendConfig["duckmail"]>;
   const tempmailLol = (source.tempmail_lol ?? {}) as Partial<BackendConfig["tempmail_lol"]>;
   const yydsMail = (source.yyds_mail ?? {}) as Partial<BackendConfig["yyds_mail"]>;
+  const skymail = (source.skymail ?? {}) as Partial<BackendConfig["skymail"]>;
   const maintainer = (source.maintainer ?? {}) as Partial<BackendConfig["maintainer"]>;
   const run = (source.run ?? {}) as Partial<BackendConfig["run"]>;
   const flow = (source.flow ?? {}) as Partial<BackendConfig["flow"]>;
@@ -189,6 +198,14 @@ export function normalizeBackendConfig(raw: Partial<BackendConfig> | Record<stri
       api_key: toString(yydsMail.api_key, defaultBackendConfig.yyds_mail.api_key),
       domain: toString(yydsMail.domain, defaultBackendConfig.yyds_mail.domain),
       domains: toStringArray(yydsMail.domains, defaultBackendConfig.yyds_mail.domains),
+    },
+    skymail: {
+      api_base: toString(skymail.api_base, defaultBackendConfig.skymail.api_base),
+      token: toString(skymail.token, defaultBackendConfig.skymail.token),
+      admin_email: toString(skymail.admin_email, defaultBackendConfig.skymail.admin_email),
+      admin_password: toString(skymail.admin_password, defaultBackendConfig.skymail.admin_password),
+      domain: toString(skymail.domain, defaultBackendConfig.skymail.domain),
+      domains: toStringArray(skymail.domains, defaultBackendConfig.skymail.domains),
     },
     maintainer: {
       min_candidates: toNumber(maintainer.min_candidates, defaultBackendConfig.maintainer.min_candidates),
@@ -338,6 +355,7 @@ export function configToSections(config: BackendConfig): ConfigSection[] {
             { label: "duckmail", value: "duckmail" },
             { label: "tempmail_lol", value: "tempmail_lol" },
             { label: "yyds_mail", value: "yyds_mail" },
+            { label: "skymail", value: "skymail" },
           ],
         },
         { key: "otp_timeout_seconds", label: "验证码超时", type: "number", value: config.mail.otp_timeout_seconds },
@@ -415,6 +433,45 @@ export function configToSections(config: BackendConfig): ConfigSection[] {
           hint: "每行一个域名；填写后优先于单个 domain。",
         },
         { key: "api_key", label: "访问密钥", type: "password", value: config.yyds_mail.api_key, sensitive: true },
+      ],
+    },
+    {
+      key: "skymail",
+      label: "SkyMail 配置",
+      columns: 2,
+      fields: [
+        { key: "api_base", label: "接口地址", type: "text", value: config.skymail.api_base },
+        {
+          key: "token",
+          label: "访问 Token",
+          type: "password",
+          value: config.skymail.token,
+          sensitive: true,
+          hint: "可留空；留空时会尝试使用 admin_email 和 admin_password 自动生成 token。",
+        },
+        {
+          key: "admin_email",
+          label: "管理员邮箱",
+          type: "text",
+          value: config.skymail.admin_email,
+          hint: "当 token 为空时，系统会使用该邮箱向 SkyMail 申请 token。",
+        },
+        {
+          key: "admin_password",
+          label: "管理员密码",
+          type: "password",
+          value: config.skymail.admin_password,
+          sensitive: true,
+          hint: "仅在 token 为空且需要自动生成 token 时使用。",
+        },
+        { key: "domain", label: "邮箱域名", type: "text", value: config.skymail.domain },
+        {
+          key: "domains",
+          label: "邮箱域名列表",
+          type: "textarea",
+          value: arrayToLines(config.skymail.domains),
+          hint: "每行一个域名；填写后优先于单个 domain。",
+        },
       ],
     },
     {

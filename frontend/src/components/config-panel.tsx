@@ -107,6 +107,7 @@ export function ConfigPanel(props: ConfigPanelProps) {
     duckmail: false,
     tempmail_lol: false,
     yyds_mail: false,
+    skymail: false,
     run: false,
     registration: false,
     flow: false,
@@ -123,6 +124,7 @@ export function ConfigPanel(props: ConfigPanelProps) {
     duckmail: "mail",
     tempmail_lol: "mail",
     yyds_mail: "mail",
+    skymail: "mail",
     run: "advanced",
     registration: "advanced",
     flow: "advanced",
@@ -146,6 +148,7 @@ export function ConfigPanel(props: ConfigPanelProps) {
     duckmail: "DuckMail",
     tempmail_lol: "TempMail.lol",
     yyds_mail: "YYDS Mail",
+    skymail: "SkyMail",
   };
 
   const visibleSections = sections.filter((section) => {
@@ -166,6 +169,9 @@ export function ConfigPanel(props: ConfigPanelProps) {
     }
     if (section.key === "yyds_mail") {
       return selectedProvider === "yyds_mail";
+    }
+    if (section.key === "skymail") {
+      return selectedProvider === "skymail";
     }
     return true;
   });
@@ -204,7 +210,8 @@ export function ConfigPanel(props: ConfigPanelProps) {
       selectedProvider === "self_hosted_mail_api" ||
       selectedProvider === "duckmail" ||
       selectedProvider === "tempmail_lol" ||
-      selectedProvider === "yyds_mail"
+      selectedProvider === "yyds_mail" ||
+      selectedProvider === "skymail"
     ) {
       setExpandedSections((current) => ({
         ...current,
@@ -223,7 +230,8 @@ export function ConfigPanel(props: ConfigPanelProps) {
       selectedProvider === "self_hosted_mail_api" ||
       selectedProvider === "duckmail" ||
       selectedProvider === "tempmail_lol" ||
-      selectedProvider === "yyds_mail"
+      selectedProvider === "yyds_mail" ||
+      selectedProvider === "skymail"
     ) {
       setExpandedSections((current) => ({
         ...current,

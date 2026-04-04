@@ -55,6 +55,14 @@ export type BackendConfig = {
     domain: string;
     domains: string[];
   };
+  skymail: {
+    api_base: string;
+    token: string;
+    admin_email: string;
+    admin_password: string;
+    domain: string;
+    domains: string[];
+  };
   maintainer: {
     min_candidates: number;
     loop_interval_seconds: number;
